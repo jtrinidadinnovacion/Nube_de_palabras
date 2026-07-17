@@ -1,0 +1,23 @@
+/* You can add global styles to this file, and also import other style files */
+
+@font-face {
+  font-family: 'Goldplay Bold';
+  src: url('/fonts/goldplay_bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Goldplay Medium';
+  src: url('/fonts/goldplay_medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}

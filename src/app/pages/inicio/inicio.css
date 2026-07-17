@@ -1,0 +1,79 @@
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.inicio {
+  box-sizing: border-box;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+  padding: 4rem 6rem;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at -4.5% 99%, #4f3193 0%, transparent 20%),
+    radial-gradient(circle at 99% 9%, #095080 0%, transparent 32%),
+    #030233;
+}
+
+.inicio__illustration {
+  flex: 1 1 60%;
+  display: flex;
+  justify-content: center;
+}
+
+.inicio__cloud {
+  max-width: 100%;
+  height: auto;
+}
+
+.inicio__content {
+  flex: 1 1 45%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.inicio__title {
+  margin: 0 0 1rem;
+  font-family: 'Goldplay Bold', sans-serif;
+  color: #ffffff;
+  font-size: clamp(2rem, 3vw, 4rem);
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.inicio__subtitle {
+  margin: 0 0 2rem;
+  font-family: 'Goldplay Medium', sans-serif;
+  color: #FFA5D8;
+  font-size: clamp(1.1rem, 2vw, 2.5rem);
+}
+
+.inicio__cta {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.inicio__cta img {
+  display: block;
+  max-width: 220px;
+  height: auto;
+}
+
+@media (max-width: 900px) {
+  .inicio {
+    flex-direction: column;
+    text-align: center;
+    padding: 3rem 2rem;
+  }
+
+  .inicio__content {
+    align-items: center;
+  }
+}
