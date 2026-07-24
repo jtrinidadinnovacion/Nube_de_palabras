@@ -15,8 +15,7 @@ export class ModalExportado implements OnChanges {
   @Output() closed = new EventEmitter<void>();
   @Output() exportado = new EventEmitter<void>();
 
-  // Referencia al documento oculto (panel de datos + nube) que se rasteriza tal cual se ve en pantalla,
-  // para que el PDF salga idéntico a ese diseño en vez de una aproximación dibujada a mano en un canvas.
+  // Referencia al contenido que se captura para generar un PDF con el mismo diseño que se muestra en pantalla.
   private readonly documentoRef = viewChild<ElementRef<HTMLDivElement>>('documentoRef');
 
   protected readonly exportando = signal(true);
@@ -44,8 +43,6 @@ export class ModalExportado implements OnChanges {
     this.exportando.set(true);
     this.error.set(false);
     try {
-      // Sin conexión no tiene caso ni intentarlo: las fuentes e imágenes del documento se piden por
-      // red, así que sin internet la exportación fallaría a medias en vez de generar el PDF completo.
       if (!navigator.onLine) {
         throw new Error('Sin conexión a internet.');
       }
@@ -58,12 +55,11 @@ export class ModalExportado implements OnChanges {
     }
   }
 
-  /* Arma la imagen del documento (panel de datos + nube) y la mete en un PDF que el navegador descarga. */
   private async exportarPdf(): Promise<void> {
     const { imagen, ancho, alto } = await this.construirImagenDocumento();
     const { jsPDF } = await import('jspdf');
 
-    const documento = new jsPDF({ orientation: ancho >= alto ? 'landscape' : 'portrait', unit: 'mm', format: 'a4' });
+    const documento = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
     const anchoPagina = documento.internal.pageSize.getWidth();
     const altoPagina = documento.internal.pageSize.getHeight();
 
@@ -105,8 +101,11 @@ export class ModalExportado implements OnChanges {
       document.fonts.load("500 100px 'Goldplay Medium'"),
     ]);
     // Un frame extra para asegurarnos de que Angular ya pintó los @Input en el documento oculto.
-    await new Promise((resolve) => requestAnimationFrame(() => resolve(undefined)));
-
+    await new Promise(resolve =>
+    requestAnimationFrame(() =>
+        requestAnimationFrame(resolve)
+    )
+);
     const elemento = this.documentoRef()!.nativeElement;
     const { default: html2canvas } = await import('html2canvas');
     const canvas = await html2canvas(elemento, { backgroundColor: '#ffffff', scale: 2 });

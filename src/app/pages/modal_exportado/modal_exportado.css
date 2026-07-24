@@ -99,103 +99,55 @@
   pointer-events: none;
 }
 
-/* Documento oculto que se rasteriza con html2canvas para armar el PDF (ver modal_exportado.html/.ts). */
+/* Documento oculto que se rasteriza con html2canvas para armar el PDF (ver modal_exportado.html/.ts).
+ * Diseño: encabezado (logo + título) arriba, la nube centrada en medio, y una franja azul clara abajo
+ * con los datos del modal repartidos en dos filas. */
 .documento-exportar {
   position: fixed;
-  top: 0;
   left: -99999px;
-  display: flex;
-  align-items: stretch;
-  border-radius: 20px;
-  overflow: hidden;
-}
-
-.documento-exportar__panel {
-  position: relative;
-  overflow: visible;
+  top: 0;
+  width: 1123px;
+  height: 794px;
   box-sizing: border-box;
-  flex: 0 0 420px;
-  width: 420px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  padding: 110px 36px 40px;
-  background: #56A4FC;
-  border-radius: 0 0 20px 20px;
+  background: #fff;
+}
+
+.documento-exportar__header {
+  display: flex;
+  align-items: center;
+  padding: 28px 70px 0;
 }
 
 .documento-exportar__logo {
-  position: absolute;
-  top: -48px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 95px;
+  width: 40px;
   height: auto;
-  z-index: 10;
 }
 
 .documento-exportar__titulo {
-  margin: 0 0 10px;
-  text-align: center;
-  font-family: 'Goldplay Medium', sans-serif;
-  font-size: 28px;
+  margin: 0;
+  font-family: 'Goldplay Bold', sans-serif;
+  font-size: 25px;
   font-weight: 700;
   color: #6F88FC;
+  
 }
 
-.documento-exportar__campo {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.documento-exportar__etiqueta {
-  font-family: 'Goldplay Medium', sans-serif;
-  font-size: 16px;
-  color: #6F88FC;
-}
-
-.documento-exportar__valor {
-  box-sizing: border-box;
-  padding: 12px 16px;
-  border-radius: 10px;
-  background: #ffffff;
-  font-family: 'Goldplay Medium', sans-serif;
-  font-size: 16px;
-  color: #6F88FC;
-}
-
-.documento-exportar__semestre {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.documento-exportar__semestre-num {
-  box-sizing: border-box;
+.documento-exportar__nube-wrap {
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  background: #ffffff;
-  font-family: 'Goldplay Medium', sans-serif;
-  font-weight: 700;
-  font-size: 16px;
-  color: #6F88FC;
-}
-
-.documento-exportar__semestre-label {
-  font-family: 'Goldplay Medium', sans-serif;
-  font-size: 16px;
-  color: #E4ECFF;
+  padding: 0;
+  overflow: hidden;
+  margin-bottom: 38px;
 }
 
 .documento-exportar__nube {
   position: relative;
-  flex: 0 0 auto;
-  background: #ffffff;
+  transform: scale(.82);
+  transform-origin: center center;
 }
 
 .documento-exportar__palabra {
@@ -203,4 +155,41 @@
   font-family: 'Goldplay Bold', sans-serif;
   line-height: 1;
   white-space: nowrap;
+}
+
+.documento-exportar__footer{
+    width:100%;
+    box-sizing:border-box;
+    background:#DDEDFE;
+    padding:22px 35px 26px;
+}
+
+.documento-exportar__fila {
+  display: flex;
+  gap: 30px;
+  justify-content: space-between;
+}
+
+.documento-exportar__campo {
+  flex: 1;
+}
+
+.documento-exportar__campo--chico {
+  flex: 0 0 140px;
+}
+
+.documento-exportar__campo--ancho {
+  flex: 2;
+}
+
+.documento-exportar__etiqueta {
+  font-family: 'Goldplay Medium', sans-serif;
+  font-size: 13px;
+  color: #4F3193;
+}
+
+.documento-exportar__texto{
+    font-family:'Goldplay Medium',sans-serif;
+    font-size:15px;
+    color:#222;
 }
