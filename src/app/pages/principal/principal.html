@@ -1,0 +1,160 @@
+<section class="principal">
+  <header class="principal__header">
+    <div class="principal__general-btns-wrap">
+      <img src="img/btn_generales.svg" alt="Opciones generales" class="principal__general-btns" />
+      <a routerLink="/" class="principal__inicio-hit" aria-label="Inicio"></a>
+      <button type="button" class="principal__save-hit" aria-label="Guardar" (click)="guardarNube()"></button>
+      <button type="button" class="principal__about-hit" aria-label="Acerca de" (click)="mostrarAbout.set(true)"></button>
+      <a routerLink="/" class="principal__logout-hit" aria-label="Salir"></a>
+    </div>
+  </header>
+
+  <div class="principal__main">
+    <div class="principal__card">
+      <div class="principal__panel principal__panel--left">
+        <div class="principal__toolbar">
+          <img src="img/añadir_subir.svg" alt="Añadir texto o subir archivo" />
+          <button type="button" class="principal__toolbar-hit principal__toolbar-hit--texto" aria-label="Añadir texto" (click)="establecerModo('texto')"></button>
+          <button type="button" class="principal__toolbar-hit principal__toolbar-hit--archivo" aria-label="Subir archivo" (click)="establecerModo('archivo')"></button>
+        </div>
+
+        <div class="principal__upload-box">
+          @if (archivoExportado()) {
+            <div class="principal__export-card">
+              <button
+                type="button"
+                class="principal__export-card-remove"
+                (click)="archivoExportado.set(false)"
+                aria-label="Cerrar"
+              >&times;</button>
+              <img src="img/img_png.png" alt="Archivo exportado" class="principal__export-card-icon" />
+            </div>
+          } @else if (modoEntrada() === 'texto') {
+            <div class="principal__text-mode">
+              <input
+                #campoPalabra
+                type="text"
+                class="principal__text-input"
+                placeholder="Escribe una palabra y presiona Enter"
+                (keydown.enter)="agregarPalabra(campoPalabra.value); campoPalabra.value = ''"
+                (paste)="alPegarTexto($event)"
+              />
+
+              <ul class="principal__items">
+                @for (palabra of palabras(); track $index) {
+                  <li>{{ palabra }}</li>
+                }
+              </ul>
+            </div>
+          } @else {
+            <div
+              class="principal__file-mode"
+              [class.is-dragover]="arrastrandoArchivo()"
+              (dragover)="alArrastrarSobre($event)"
+              (dragleave)="alSalirDelArrastre()"
+              (drop)="alSoltarArchivo($event)"
+            >
+              <img src="img/subir_archivo.png" alt="" class="principal__file-icon" />
+              @if (nombreArchivoSeleccionado()) {
+                <div class="principal__file-selected">
+                  <p class="principal__file-hint principal__file-hint--selected">{{ nombreArchivoSeleccionado() }}</p>
+                  <button
+                    type="button"
+                    class="principal__file-remove"
+                    (click)="quitarArchivo()"
+                    aria-label="Quitar archivo"
+                  >&times;</button>
+                </div>
+                @if (leyendoArchivo()) {
+                  <p class="principal__file-status">Leyendo archivo…</p>
+                } @else if (errorArchivo()) {
+                  <p class="principal__file-status principal__file-status--error">{{ errorArchivo() }}</p>
+                }
+              } @else {
+                <p class="principal__file-hint">Arrastra tu archivo aquí</p>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="principal__actions">
+          @if (modoEntrada() === 'archivo') {
+            <input
+              #campoArchivo
+              type="file"
+              accept=".pdf,.docx,.txt"
+              class="principal__file-input"
+              (change)="alSeleccionarArchivo(campoArchivo.files)"
+              hidden
+            />
+            <button type="button" class="principal__choose-file" (click)="campoArchivo.click()">
+              <img src="img/btn_elegir.svg" alt="" class="principal__choose-file-bg" />
+              <span class="principal__choose-file-label">Elegir archivo</span>
+            </button>
+          }
+
+          <button type="button" class="principal__generate" [disabled]="leyendoArchivo()" (click)="generar()">
+            <img src="img/btn_verde.svg" alt="" class="principal__generate-bg" />
+            <span class="principal__generate-label">Generar</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="principal__panel principal__panel--right">
+        <div
+          class="principal__canvas"
+          [class.principal__canvas--arrastrando]="arrastrandoLienzoActivo()"
+          (wheel)="alScrollearEnLienzo($event)"
+          (mousedown)="iniciarArrastreLienzo($event)" 
+          (mousemove)="moverArrastreLienzo($event)"
+          (mouseup)="terminarArrastreLienzo()"
+          (mouseleave)="terminarArrastreLienzo()"
+        >
+          <div
+            class="principal__canvas-contenido"
+            #canvasEl
+            [style.transform]="'translate(' + panX() + 'px, ' + panY() + 'px) scale(' + (zoom() / 100) + ')'" /*hace mover la nube y hacer el scroll*/
+          >
+            @for (palabra of palabrasNube(); track palabra.texto) {
+              <span
+                class="principal__cloud-word"
+                [style.left.px]="palabra.izquierda"
+                [style.top.px]="palabra.arriba"
+                [style.fontSize.px]="palabra.tamano"
+                [style.color]="palabra.color"
+              >{{ palabra.texto }}</span>
+            }
+          </div>
+        </div>
+
+        <div class="principal__zoom">
+          <button type="button" class="principal__zoom-btn" aria-label="Reducir zoom" [disabled]="zoom() <= 0" (click)="reducirZoom()">
+            <img src="img/zoom_men.png" alt="" />
+          </button>
+          <span class="principal__zoom-value">{{ zoom() }}%</span>
+          <button type="button" class="principal__zoom-btn" aria-label="Aumentar zoom" [disabled]="zoom() >= 100" (click)="aumentarZoom()">
+            <img src="img/zoom_mas.png" alt="" />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  @if (mostrarModalDatos()) {
+    <app-modal-datos (guardado)="alGuardarDatosModal($event)" />
+  }
+
+  @if (mostrarAbout()) {
+    <app-about (closed)="mostrarAbout.set(false)" />
+  }
+
+  @if (mostrarExportado()) {
+    <app-modal-exportado
+      [datos]="datosNube()!"
+      [palabras]="palabrasNube()"
+      [tamanoLienzo]="tamanoLienzo()!"
+      (closed)="mostrarExportado.set(false)"
+      (exportado)="alExportarConExito()"
+    />
+  }
+</section>

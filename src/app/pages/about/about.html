@@ -1,0 +1,27 @@
+<div class="about__backdrop">
+  <button type="button" class="about__close" (click)="close()" aria-label="Cerrar">&times;</button>
+
+  <div class="about__dialog">
+    <div class="about__header">
+      <h2 class="about__title">Equipo detrás del proyecto</h2>
+      <img src="img/colores.png" alt="" class="about__circulos" />
+    </div>
+
+    <div class="about__tarjetas">
+      <div class="about__tarjeta">
+        <img src="img/img_programador.png" alt="" class="about__icono" />
+        <app-item-slide [slideshowItems]="listaDesarrollo" />
+      </div>
+
+      <div class="about__tarjeta">
+        <img src="img/img_diseñador.svg" alt="" class="about__icono" />
+        <app-item-slide [slideshowItems]="listaDiseno" />
+      </div>
+
+      <div class="about__tarjeta">
+        <img src="img/ic_ceo.png" alt="" class="about__icono" />
+        <app-item-slide [slideshowItems]="equipoDireccion" />
+      </div>
+    </div>
+  </div>
+</div>

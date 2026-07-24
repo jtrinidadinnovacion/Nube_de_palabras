@@ -1,0 +1,42 @@
+<section class="instrucciones">
+  <header class="instrucciones__brand">
+    <h2 class="instrucciones__brand-title">Word Clouds Generator</h2>
+  </header>
+
+  <div class="instrucciones__body">
+    <div class="instrucciones__illustration">
+      <img src="img/nube_instru.png" alt="Instrucciones" class="instrucciones__cloud" />
+    </div>
+
+    <div class="instrucciones__panel">
+      <h1 class="instrucciones__title">Instrucciones</h1>
+
+      <ul class="instrucciones__text">
+        @for (line of slides[currentSlide()]; track $index) {
+          <li>{{ line }}</li>
+        }
+      </ul>
+
+      <nav class="instrucciones__pagination" aria-label="Paginación de instrucciones">
+        @for (slide of slides; track $index) {
+          <button
+            type="button"
+            class="instrucciones__dot"
+            [class.is-active]="$index === currentSlide()"
+            (click)="goTo($index)"
+            [attr.aria-label]="'Ir al paso ' + ($index + 1)"
+          ></button>
+        }
+      </nav>
+    </div>
+  </div>
+
+  <button type="button" class="instrucciones__skip" (click)="advanceOrStart()">
+    <img src="img/btn_verde.svg" alt="" class="instrucciones__skip-bg" />
+    @if (currentSlide() === slides.length - 1) {
+      <span class="instrucciones__skip-label">Empezar</span>
+    } @else {
+      <span class="instrucciones__skip-label">Saltar</span>
+    }
+  </button>
+</section>

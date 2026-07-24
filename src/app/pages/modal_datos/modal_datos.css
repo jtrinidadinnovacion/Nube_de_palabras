@@ -1,0 +1,126 @@
+:host {
+  display: contents;
+}
+
+.modal-datos__backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 10, 40, 0.45);
+  z-index: 1000;
+}
+
+.modal-datos__dialog {
+  width: min(90%, 630px);
+  border-radius: 16px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+.modal-datos__header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 1.5rem;
+  background: #6f88fc;
+}
+
+.modal-datos__header h2 {
+  margin: 0;
+  font-family: 'Goldplay Medium', sans-serif;
+  color: #ffffff;
+  font-size: 1.1rem;
+}
+
+.modal-datos__body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+.modal-datos__row {
+  display: flex;
+  gap: 1rem;
+}
+
+.modal-datos__field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.modal-datos__field--small {
+  flex: 0 0 35%;
+}
+
+.modal-datos__field span {
+  font-family: 'Goldplay Medium', sans-serif;
+  color: #9c62f4;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.modal-datos__field input {
+  box-sizing: border-box;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #9c62f4;
+  border-radius: 8px;
+  font-family: 'Goldplay Regular', sans-serif;
+  font-size: 0.9rem;
+  color: #333333;
+}
+
+.modal-datos__field input::placeholder {
+  color: #b7b7c9;
+}
+
+.modal-datos__actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.modal-datos__next {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.modal-datos__next-bg {
+  display: block;
+  max-width: 180px;
+  height: auto;
+}
+
+.modal-datos__next-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Goldplay Medium', sans-serif;
+  color: #ffffff;
+  font-size: var(--btn-siguiente-size);
+  pointer-events: none;
+}
+
+.modal-datos__field input:focus {
+  outline: none;
+  border-color: #9c62f4;
+  box-shadow: 0 0 0 3px rgba(156, 98, 244, 0.25);
+}
+
+.modal-datos__next:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

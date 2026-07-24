@@ -16,6 +16,106 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Goldplay Semibold';
+  src: url('/fonts/goldplay_semibold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Goldplay Regular';
+  src: url('/fonts/goldplay_regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Goldplay Light';
+  src: url('/fonts/goldplay_light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* =========================================
+   1. CELULAR CHICO (base, hasta 575px)
+========================================= */
+:root {
+  --btn-comenzar-size: 18px;
+  --btn-saltar-size: 18px;
+  --btn-siguiente-size: 14px;
+  --btn-generar-size: 16px;
+  --btn-elegir-size: 14px;
+}
+
+/* =========================================
+   2. CELULAR GRANDE (576px en adelante)
+========================================= */
+@media (min-width: 576px) {
+  :root {
+    --btn-comenzar-size: 20px;
+    --btn-saltar-size: 20px;
+    --btn-siguiente-size: 15px;
+    --btn-generar-size: 18px;
+    --btn-elegir-size: 15px;
+  }
+}
+
+/* =========================================
+   3. TABLET (768px en adelante)
+========================================= */
+@media (min-width: 768px) {
+  :root {
+    --btn-comenzar-size: 24px;
+    --btn-saltar-size: 24px;
+    --btn-siguiente-size: 17px;
+    --btn-generar-size: 21px;
+    --btn-elegir-size: 17px;
+  }
+}
+
+/* =========================================
+   4. ESCRITORIO PEQUEÑO / LAPTOPS (992px en adelante)
+========================================= */
+@media (min-width: 992px) {
+  :root {
+    --btn-comenzar-size: 28px;
+    --btn-saltar-size: 28px;
+    --btn-siguiente-size: 20px;
+    --btn-generar-size: 25px;
+    --btn-elegir-size: 20px;
+  }
+}
+
+/* =========================================
+   5. ESCRITORIO NORMAL (1200px en adelante)
+========================================= */
+@media (min-width: 1200px) {
+  :root {
+    --btn-comenzar-size: 30px;
+    --btn-saltar-size: 30px;
+    --btn-siguiente-size: 21px;
+    --btn-generar-size: 26px;
+    --btn-elegir-size: 21px;
+  }
+}
+
+/* =========================================
+   6. PANTALLAS GRANDES / MONITORES (1400px en adelante)
+========================================= */
+@media (min-width: 1400px) {
+  :root {
+    --btn-comenzar-size: 32px;
+    --btn-saltar-size: 32px;
+    --btn-siguiente-size: 22px;
+    --btn-generar-size: 28px;
+    --btn-elegir-size: 22px;
+  }
+}
+
 html,
 body {
   margin: 0;

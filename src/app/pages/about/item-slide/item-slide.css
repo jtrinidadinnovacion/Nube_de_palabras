@@ -1,0 +1,79 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.item-slide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.item-slide__miembros {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  width: 100%;
+}
+
+.item-slide__miembro {
+  text-align: center;
+}
+
+.item-slide__nombre {
+  margin: 0;
+  font-family: 'Goldplay Bold', sans-serif;
+  font-size: 0.85rem;
+  color: #1a1a2e;
+}
+
+.item-slide__rol {
+  margin: 0;
+  font-family: 'Goldplay Regular', sans-serif;
+  font-size: 0.75rem;
+  color: #8a8a9a;
+}
+
+.item-slide__nav {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.item-slide__flecha {
+  padding: 0;
+  border: none;
+  background: none;
+  color: #9c62f4;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.item-slide__flecha:hover {
+  color: #6384eb;
+}
+
+.item-slide__puntos {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.item-slide__punto {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: #d8dffb;
+  cursor: pointer;
+}
+
+.item-slide__punto--activo {
+  background: #9c62f4;
+}

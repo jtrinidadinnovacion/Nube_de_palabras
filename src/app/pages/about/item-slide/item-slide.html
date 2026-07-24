@@ -1,0 +1,32 @@
+@if (slideshowItems.length) {
+  <div class="item-slide">
+    <ul class="item-slide__miembros">
+      @for (miembro of slideshowItems[indice()].members; track miembro.name) {
+        <li class="item-slide__miembro">
+          <p class="item-slide__nombre">{{ miembro.name }}</p>
+          <p class="item-slide__rol">{{ miembro.role }}</p>
+        </li>
+      }
+    </ul>
+
+    @if (slideshowItems.length > 1) {
+      <div class="item-slide__nav">
+        <button type="button" class="item-slide__flecha" (click)="anterior()" aria-label="Anterior">&#8249;</button>
+
+        <span class="item-slide__puntos">
+          @for (slide of slideshowItems; track $index) {
+            <button
+              type="button"
+              class="item-slide__punto"
+              [class.item-slide__punto--activo]="$index === indice()"
+              (click)="irA($index)"
+              [attr.aria-label]="'Ir al grupo ' + ($index + 1)"
+            ></button>
+          }
+        </span>
+
+        <button type="button" class="item-slide__flecha" (click)="siguiente()" aria-label="Siguiente">&#8250;</button>
+      </div>
+    }
+  </div>
+}

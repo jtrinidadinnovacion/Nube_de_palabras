@@ -1,0 +1,43 @@
+<div class="modal-datos__backdrop">
+  <div class="modal-datos__dialog">
+    <header class="modal-datos__header">
+      <h2>Ingresa los datos de tu archivo</h2>
+    </header>
+
+    <form class="modal-datos__body" #formDatos="ngForm" (ngSubmit)="siguiente(formDatos)">
+      <div class="modal-datos__row">
+        <label class="modal-datos__field">
+          <span>Nombre del estudiante:</span>
+          <input type="text" name="nombreEstudiante" [(ngModel)]="datos.nombreEstudiante" required maxlength="100" placeholder="Nombre completo del estudiante" />
+        </label>
+
+        <label class="modal-datos__field modal-datos__field--small">
+          <span>Semestre:</span>
+          <input type="text" name="semestre" [(ngModel)]="datos.semestre" required maxlength="50" placeholder="Semestre" />
+        </label>
+      </div>
+
+      <label class="modal-datos__field">
+        <span>Nombre del docente:</span>
+        <input type="text" name="nombreDocente" [(ngModel)]="datos.nombreDocente" required maxlength="100" placeholder="Nombre completo del profesor" />
+      </label>
+
+      <label class="modal-datos__field">
+        <span>Asignatura:</span>
+        <input type="text" name="asignatura" [(ngModel)]="datos.asignatura" required maxlength="150" placeholder="Materia" />
+      </label>
+
+      <label class="modal-datos__field">
+        <span>Tema:</span>
+        <input type="text" name="tema" [(ngModel)]="datos.tema" required maxlength="150" placeholder="Tema del trabajo" />
+      </label>
+
+      <div class="modal-datos__actions">
+        <button type="submit" class="modal-datos__next" [disabled]="formDatos.invalid">
+          <img src="img/btn_verde.svg" alt="" class="modal-datos__next-bg" />
+          <span class="modal-datos__next-label">Siguiente</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

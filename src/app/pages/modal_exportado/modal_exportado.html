@@ -1,0 +1,90 @@
+<div class="modal-exportado__backdrop">
+  <div class="modal-exportado__dialog">
+    @if (exportando()) {
+      <div class="modal-exportado__cargando">
+        <p class="modal-exportado__mensaje">Exportando tu nube a PDF…</p>
+      </div>
+    } @else if (error()) {
+      <img src="img/nube_incorre.png" alt="" class="modal-exportado__imagen" />
+
+      <div class="modal-exportado__contenido">
+        <h2 class="modal-exportado__titulo">¡Ups! Algo salió mal</h2>
+        <p class="modal-exportado__subtexto">
+          No pudimos exportar tu archivo a PDF. Asegúrate de tener conexión a internet y vuelve a intentarlo.
+        </p>
+
+        <div class="modal-exportado__acciones">
+          <button type="button" class="modal-exportado__accion" (click)="reintentar()">
+            <img src="img/btn_verde.svg" alt="" class="modal-exportado__accion-bg" />
+            <span class="modal-exportado__accion-label">Reintentar</span>
+          </button>
+
+          <button type="button" class="modal-exportado__accion" (click)="close()">
+            <img src="img/btn_cerrar.svg" alt="" class="modal-exportado__accion-bg" />
+            <span class="modal-exportado__accion-label">Cerrar</span>
+          </button>
+        </div>
+      </div>
+    } @else {
+      <img src="img/nube_bien.png" alt="" class="modal-exportado__imagen" />
+
+      <div class="modal-exportado__contenido">
+        <p class="modal-exportado__mensaje">Tu archivo se exportó correctamente a PDF</p>
+
+        <button type="button" class="modal-exportado__accion" (click)="close()">
+          <img src="img/btn_verde.svg" alt="" class="modal-exportado__accion-bg" />
+          <span class="modal-exportado__accion-label">Aceptar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Documento oculto (fuera de pantalla): se rasteriza tal cual con html2canvas para armar el PDF,
+     así el archivo sale idéntico a como se ve aquí, en vez de una aproximación dibujada en un canvas. -->
+<div class="documento-exportar" #documentoRef>
+  <div class="documento-exportar__panel">
+    <img src="img/nube_cuadro.png" alt="" class="documento-exportar__panel-bg" />
+
+    <div class="documento-exportar__panel-contenido">
+      <h2 class="documento-exportar__titulo">Nube de palabras</h2>
+
+      <div class="documento-exportar__campo">
+        <span class="documento-exportar__etiqueta">Nombre del estudiante:</span>
+        <div class="documento-exportar__valor">{{ datos.nombreEstudiante }}</div>
+      </div>
+
+      <div class="documento-exportar__campo">
+        <span class="documento-exportar__etiqueta">Nombre del docente:</span>
+        <div class="documento-exportar__valor">{{ datos.nombreDocente }}</div>
+      </div>
+
+      <div class="documento-exportar__campo">
+        <span class="documento-exportar__etiqueta">Asignatura:</span>
+        <div class="documento-exportar__valor">{{ datos.asignatura }}</div>
+      </div>
+
+      <div class="documento-exportar__campo">
+        <span class="documento-exportar__etiqueta">Tema:</span>
+        <div class="documento-exportar__valor">{{ datos.tema }}</div>
+      </div>
+
+      <div class="documento-exportar__semestre">
+        <span class="documento-exportar__semestre-num">{{ datos.semestre }}</span>
+        <span class="documento-exportar__semestre-label">Semestre</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="documento-exportar__nube" [style.width.px]="tamanoLienzo.ancho" [style.height.px]="tamanoLienzo.alto">
+    @for (palabra of palabras; track palabra.texto) {
+      <span
+        class="documento-exportar__palabra"
+        [style.left.px]="palabra.izquierda"
+        [style.top.px]="palabra.arriba"
+        [style.fontSize.px]="palabra.tamano"
+        [style.color]="palabra.color"
+      >{{ palabra.texto }}</span>
+    }
+  </div>
+</div>

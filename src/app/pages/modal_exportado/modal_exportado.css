@@ -1,0 +1,206 @@
+:host {
+  display: contents;
+}
+
+.modal-exportado__backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 10, 40, 0.45);
+  z-index: 1100;
+}
+
+.modal-exportado__dialog {
+  width: min(90%, 350px);
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+.modal-exportado__cargando {
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.modal-exportado__imagen {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.modal-exportado__contenido {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+  padding: 3rem 1.75rem 2rem;
+}
+
+.modal-exportado__mensaje {
+  margin: 0;
+  text-align: center;
+  font-family: 'Goldplay Medium', sans-serif;
+  font-size: 1.1rem;
+  color: #333333;
+}
+
+.modal-exportado__titulo {
+  margin: 0;
+  text-align: center;
+  font-family: 'Goldplay Semibold', sans-serif;
+  font-size: 1.2rem;
+  color: #333333;
+}
+
+.modal-exportado__subtexto {
+  margin: 0;
+  text-align: center;
+  font-family: 'Goldplay Medium', sans-serif;
+  font-size: 0.9rem;
+  color: #8a8a99;
+}
+
+.modal-exportado__acciones {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.modal-exportado__accion {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.modal-exportado__accion-bg {
+  display: block;
+  max-width: 150px;
+  height: auto;
+}
+
+.modal-exportado__accion-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Goldplay Medium', sans-serif;
+  color: #ffffff;
+  font-size: var(--btn-siguiente-size);
+  pointer-events: none;
+}
+
+/* Documento oculto que se rasteriza con html2canvas para armar el PDF (ver modal_exportado.html/.ts). */
+.documento-exportar {
+  position: fixed;
+  top: 0;
+  left: -99999px;
+  display: flex;
+  align-items: stretch;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.documento-exportar__panel {
+  position: relative;
+  overflow: visible;
+  box-sizing: border-box;
+  flex: 0 0 420px;
+  width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 110px 36px 40px;
+  background: #56A4FC;
+  border-radius: 0 0 20px 20px;
+}
+
+.documento-exportar__logo {
+  position: absolute;
+  top: -48px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95px;
+  height: auto;
+  z-index: 10;
+}
+
+.documento-exportar__titulo {
+  margin: 0 0 10px;
+  text-align: center;
+  font-family: 'Goldplay Medium', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #6F88FC;
+}
+
+.documento-exportar__campo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.documento-exportar__etiqueta {
+  font-family: 'Goldplay Medium', sans-serif;
+  font-size: 16px;
+  color: #6F88FC;
+}
+
+.documento-exportar__valor {
+  box-sizing: border-box;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: #ffffff;
+  font-family: 'Goldplay Medium', sans-serif;
+  font-size: 16px;
+  color: #6F88FC;
+}
+
+.documento-exportar__semestre {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.documento-exportar__semestre-num {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #ffffff;
+  font-family: 'Goldplay Medium', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #6F88FC;
+}
+
+.documento-exportar__semestre-label {
+  font-family: 'Goldplay Medium', sans-serif;
+  font-size: 16px;
+  color: #E4ECFF;
+}
+
+.documento-exportar__nube {
+  position: relative;
+  flex: 0 0 auto;
+  background: #ffffff;
+}
+
+.documento-exportar__palabra {
+  position: absolute;
+  font-family: 'Goldplay Bold', sans-serif;
+  line-height: 1;
+  white-space: nowrap;
+}

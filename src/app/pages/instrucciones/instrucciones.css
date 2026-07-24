@@ -1,0 +1,148 @@
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.instrucciones {
+  box-sizing: border-box;
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 3rem 6rem;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at -4.5% 99%, #4f3193 0%, transparent 20%),
+    radial-gradient(circle at 99% 9%, #095080 0%, transparent 32%),
+    #030233;
+}
+
+.instrucciones__brand-title {
+  margin: 0;
+  font-family: 'Goldplay Bold', sans-serif;
+  color: #ffffff;
+  font-size: clamp(3.3rem, 2vw, 2rem);
+  text-transform: uppercase;
+}
+
+.instrucciones__body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+}
+
+.instrucciones__illustration {
+  flex: 1 1 45%;
+  display: flex;
+  justify-content: center;
+}
+
+.instrucciones__cloud {
+  max-width: 110%;
+  height: auto;
+}
+
+.instrucciones__panel {
+  flex: 1 1 50%;
+  max-width: 760px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.instrucciones__title {
+  align-self: center;
+  width: 100%;
+  margin: 0 0 1.5rem;
+  font-family: 'Goldplay Light', sans-serif;
+  color: #FFA5D8;
+  font-size: clamp(1.6rem, 2.5vw, 2.5rem);
+  text-align: center;
+}
+
+.instrucciones__text {
+  margin: 0 0 2.5rem;
+  padding-left: 1.25rem;
+}
+
+.instrucciones__text li {
+  margin: 0 0 1.25rem;
+  font-family: 'Goldplay Regular', sans-serif;
+  color: #e4e1f5;
+  font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+  line-height: 1.6;
+}
+
+.instrucciones__text li::marker {
+  color: #6F88FC ;
+}
+
+.instrucciones__pagination {
+  align-self: center;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.instrucciones__dot {
+  width: 1rem;
+  height: 1rem;
+  padding: 0;
+  border-radius: 50%;
+  border: 2px solid #6F88FC;
+  background: none;
+  cursor: pointer;
+}
+
+.instrucciones__dot.is-active {
+  background: #6F88FC;
+}
+
+.instrucciones__skip {
+  position: relative;
+  align-self: flex-end;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.instrucciones__skip-bg {
+  display: block;
+  max-width: 200px;
+  height: auto;
+}
+
+.instrucciones__skip-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Goldplay Bold', sans-serif;
+  color: #ffffff;
+  font-size: var(--btn-saltar-size);
+  pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  .instrucciones {
+    padding: 2rem;
+  }
+
+  .instrucciones__body {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .instrucciones__panel {
+    align-items: center;
+  }
+}
