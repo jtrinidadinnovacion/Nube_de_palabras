@@ -99,15 +99,11 @@
   pointer-events: none;
 }
 
-/* Documento oculto que se rasteriza con html2canvas para armar el PDF (ver modal_exportado.html/.ts).
- * Diseño: encabezado (logo + título) arriba, la nube centrada en medio, y una franja azul clara abajo
- * con los datos del modal repartidos en dos filas. */
 .documento-exportar {
-  position: fixed;
+  position: absolute;
   left: -99999px;
   top: 0;
   width: 1123px;
-  height: 794px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -135,19 +131,16 @@
 }
 
 .documento-exportar__nube-wrap {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  overflow: hidden;
-  margin-bottom: 38px;
+  flex:1;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 
-.documento-exportar__nube {
-  position: relative;
-  transform: scale(.82);
-  transform-origin: center center;
+.documento-exportar__nube{
+  position:relative;
+  transform:translateY(-15px) scale(.82);
+  transform-origin:center;
 }
 
 .documento-exportar__palabra {
@@ -158,10 +151,10 @@
 }
 
 .documento-exportar__footer{
-    width:100%;
-    box-sizing:border-box;
-    background:#DDEDFE;
-    padding:22px 35px 26px;
+  width:100%;
+  box-sizing:border-box;
+  background:#DDEDFE;
+  padding:22px 35px 26px;
 }
 
 .documento-exportar__fila {
@@ -170,8 +163,12 @@
   justify-content: space-between;
 }
 
-.documento-exportar__campo {
-  flex: 1;
+.documento-exportar__campo{
+  flex:1;
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:8px;
 }
 
 .documento-exportar__campo--chico {
@@ -182,14 +179,34 @@
   flex: 2;
 }
 
-.documento-exportar__etiqueta {
-  font-family: 'Goldplay Medium', sans-serif;
-  font-size: 13px;
-  color: #4F3193;
+.documento-exportar__etiqueta{
+  flex-shrink:0;
+  white-space:nowrap;
+  font-family:'Goldplay Medium',sans-serif;
+  font-size:13px;
+  color:#4F3193;
 }
 
 .documento-exportar__texto{
-    font-family:'Goldplay Medium',sans-serif;
-    font-size:15px;
-    color:#222;
+  font-family:'Goldplay Medium',sans-serif;
+  font-size:15px;
+  color:#222;
+}
+
+.documento-exportar__valor{
+  flex:1;
+  min-width:0;
+  display:flex;
+  align-items:center;
+  height:34px;
+  padding:0 12px;
+  background:#fff;
+  border-radius:8px;
+  font-family:'Goldplay Medium',sans-serif;
+  font-size:14px;
+  color:#222;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  box-sizing:border-box;
 }

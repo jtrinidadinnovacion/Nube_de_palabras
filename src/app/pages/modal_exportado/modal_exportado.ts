@@ -15,14 +15,12 @@ export class ModalExportado implements OnChanges {
   @Output() closed = new EventEmitter<void>();
   @Output() exportado = new EventEmitter<void>();
 
-  // Referencia al contenido que se captura para generar un PDF con el mismo diseño que se muestra en pantalla.
   private readonly documentoRef = viewChild<ElementRef<HTMLDivElement>>('documentoRef');
 
   protected readonly exportando = signal(true);
   protected readonly error = signal(false);
   private yaExportado = false;
 
-  /* En cuanto llegan los @Input (datos, palabras y tamaño del lienzo), armamos el PDF una sola vez. */
   ngOnChanges(): void {
     if (this.yaExportado) {
       return;
@@ -58,8 +56,7 @@ export class ModalExportado implements OnChanges {
   private async exportarPdf(): Promise<void> {
     const { imagen, ancho, alto } = await this.construirImagenDocumento();
     const { jsPDF } = await import('jspdf');
-
-    const documento = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+    const documento = new jsPDF({ orientation: 'landscape', unit: 'mm', format: [297, 210] });
     const anchoPagina = documento.internal.pageSize.getWidth();
     const altoPagina = documento.internal.pageSize.getHeight();
 
@@ -77,7 +74,6 @@ export class ModalExportado implements OnChanges {
     documento.save(this.nombreArchivoParaGuardar());
   }
 
-  /* Convierte el tema (o el nombre del estudiante, si no hay tema) en un nombre de archivo seguro. */
   private nombreArchivoParaGuardar(): string {
     const base = this.datos.tema.trim() || this.datos.nombreEstudiante.trim() || 'nube-de-palabras';
     const slug = base

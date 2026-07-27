@@ -2,7 +2,7 @@
   <header class="principal__header">
     <div class="principal__general-btns-wrap">
       <img src="img/btn_generales.svg" alt="Opciones generales" class="principal__general-btns" />
-      <a routerLink="/" class="principal__inicio-hit" aria-label="Inicio"></a>
+      <button type="button" class="principal__inicio-hit" aria-label="Inicio" (click)="mostrarModalDatos.set(true)"></button>
       <button type="button" class="principal__save-hit" aria-label="Guardar" (click)="guardarNube()"></button>
       <button type="button" class="principal__about-hit" aria-label="Acerca de" (click)="mostrarAbout.set(true)"></button>
       <a routerLink="/" class="principal__logout-hit" aria-label="Salir"></a>
