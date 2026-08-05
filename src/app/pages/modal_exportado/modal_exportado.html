@@ -58,56 +58,58 @@
 
   <div class="documento-exportar__footer">
 
-  <div class="documento-exportar__fila">
+    <div class="documento-exportar__fila">
 
-    <div class="documento-exportar__campo">
-      <span class="documento-exportar__etiqueta">
-        Nombre del estudiante:
-      </span>
-      <div class="documento-exportar__valor">
-        {{ datos.nombreEstudiante }}
+      <div class="documento-exportar__campo">
+        <span class="documento-exportar__etiqueta">
+          Nombre del estudiante:
+        </span>
+        <div class="documento-exportar__valor">
+          {{ datos.nombreEstudiante }}
+        </div>
       </div>
+
+      <div class="documento-exportar__campo">
+        <span class="documento-exportar__etiqueta">
+          Nombre del docente:
+        </span>
+        <div class="documento-exportar__valor">
+          {{ datos.nombreDocente }}
+        </div>
+      </div>
+
+      <div class="documento-exportar__campo documento-exportar__campo--chico">
+        <span class="documento-exportar__etiqueta">
+          Semestre:
+        </span>
+        <div class="documento-exportar__valor">
+          {{ datos.semestre }}
+        </div>
+      </div>
+
     </div>
 
-    <div class="documento-exportar__campo">
-      <span class="documento-exportar__etiqueta">
-        Nombre del docente:
-      </span>
-      <div class="documento-exportar__valor">
-        {{ datos.nombreDocente }}
-      </div>
-    </div>
+    <div class="documento-exportar__fila">
 
-    <div class="documento-exportar__campo documento-exportar__campo--chico">
-      <span class="documento-exportar__etiqueta">
-        Semestre:
-      </span>
-      <div class="documento-exportar__valor">
-        {{ datos.semestre }}
+      <div class="documento-exportar__campo documento-exportar__campo--asignatura">
+        <span class="documento-exportar__etiqueta">
+          Asignatura:
+        </span>
+        <div class="documento-exportar__valor">
+          {{ datos.asignatura }}
+        </div>
       </div>
-    </div>
 
+
+      <div class="documento-exportar__campo documento-exportar__campo--tema">
+        <span class="documento-exportar__etiqueta">
+          Tema:
+        </span>
+
+        <div class="documento-exportar__valor">
+          {{ datos.tema }}
+        </div>
+      </div>
+
+    </div>
   </div>
-
-  <div class="documento-exportar__fila">
-
-    <div class="documento-exportar__campo">
-      <span class="documento-exportar__etiqueta">
-        Asignatura:
-      </span>
-      <div class="documento-exportar__valor">
-        {{ datos.asignatura }}
-      </div>
-    </div>
-
-    <div class="documento-exportar__campo documento-exportar__campo--ancho">
-      <span class="documento-exportar__etiqueta">
-        Tema:
-      </span>
-      <div class="documento-exportar__valor">
-        {{ datos.tema }}
-      </div>
-    </div>
-
-  </div>
-</div> 

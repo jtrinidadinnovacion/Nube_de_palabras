@@ -70,7 +70,7 @@ export class ModalExportado implements OnChanges {
     const x = (anchoPagina - anchoImagen) / 2;
     const y = (altoPagina - altoImagen) / 2;
 
-    documento.addImage(imagen, 'PNG', x, y, anchoImagen, altoImagen);
+    documento.addImage(imagen, 'JPEG', x, y, anchoImagen, altoImagen);
     documento.save(this.nombreArchivoParaGuardar());
   }
 
@@ -85,11 +85,7 @@ export class ModalExportado implements OnChanges {
     return `${slug || 'nube-de-palabras'}.pdf`;
   }
 
-  /**
-   * Rasteriza el documento oculto (`#documentoRef`, ver la plantilla): así el PDF sale pintado con el
-   * mismo HTML/CSS real que arma el panel de datos y la nube, en vez de una aproximación dibujada a
-   * mano en un canvas.
-   */
+  /** Rasteriza el documento oculto (`#documentoRef`, ver la plantilla): así el PDF sale pintado con el mismo HTML/CSS */
   private async construirImagenDocumento(): Promise<{ imagen: string; ancho: number; alto: number }> {
     await Promise.all([
       document.fonts.load("700 100px 'Goldplay Bold'"),
@@ -103,9 +99,36 @@ export class ModalExportado implements OnChanges {
     )
 );
     const elemento = this.documentoRef()!.nativeElement;
+    this.centrarNube(elemento);
     const { default: html2canvas } = await import('html2canvas');
-    const canvas = await html2canvas(elemento, { backgroundColor: '#ffffff', scale: 2 });
+    const canvas = await html2canvas(elemento, { backgroundColor: '#ffffff', scale: 3 });
 
-    return { imagen: canvas.toDataURL('image/png'), ancho: canvas.width, alto: canvas.height };
+    return { imagen: canvas.toDataURL('image/jpeg', 0.97), ancho: canvas.width, alto: canvas.height };
+  }
+
+  private centrarNube(elemento: HTMLElement): void {
+    const nube = elemento.querySelector<HTMLElement>('.documento-exportar__nube');
+    const palabras = nube?.querySelectorAll<HTMLElement>('.documento-exportar__palabra');
+    if (!nube || !palabras || !palabras.length) {
+      return;
+    }
+
+    let minX = Infinity;
+    let minY = Infinity;
+    let maxX = -Infinity;
+    let maxY = -Infinity;
+    palabras.forEach(palabra => {
+      const left = parseFloat(palabra.style.left);
+      const top = parseFloat(palabra.style.top);
+      minX = Math.min(minX, left);
+      minY = Math.min(minY, top);
+      maxX = Math.max(maxX, left + palabra.offsetWidth);
+      maxY = Math.max(maxY, top + palabra.offsetHeight);
+    });
+
+    const dx = nube.clientWidth / 2 - (minX + maxX) / 2;
+    const dy = nube.clientHeight / 2 - (minY + maxY) / 2;
+    const ajusteVerticalNubePx = -40;
+    nube.style.transform = `scale(.82) translate(${dx}px, ${dy + ajusteVerticalNubePx}px)`;
   }
 }

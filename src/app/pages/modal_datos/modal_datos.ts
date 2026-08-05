@@ -19,6 +19,15 @@ export class ModalDatos {
     tema: '',
   };
 
+  protected filtrarSoloNumeros(evento: Event): void {
+    const input = evento.target as HTMLInputElement;
+    const limpio = input.value.replace(/[^0-9]/g, '');
+    this.datos.semestre = limpio;
+    if (input.value !== limpio) {
+      input.value = limpio;
+    }
+  }
+
   protected siguiente(formulario: NgForm): void {
     if (formulario.invalid) {
       return;

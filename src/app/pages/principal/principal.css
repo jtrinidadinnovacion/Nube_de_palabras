@@ -6,11 +6,12 @@
 
 .principal {
   box-sizing: border-box;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  padding: 1.5rem 2rem;
-  background: url('/img/fondo_nubes.png') center / cover no-repeat;
+  padding: 3.5rem 2rem 1.5rem;
+  background: url('../../../../public/img/fondo_nubes.png') center / cover no-repeat;
 }
 
 .principal__header {
@@ -21,15 +22,22 @@
   justify-content: flex-end;
 }
 
+/* La imagen btn_generales.png trae bastante margen transparente alrededor de la píldora;
+este contenedor recorta la vista para mostrar solo la píldora, ya al tamaño final. */
 .principal__general-btns-wrap {
   position: relative;
-  display: inline-flex;
+  width: 487.96px;
+  height: 44px;
+  overflow: hidden;
 }
 
 .principal__general-btns {
-  display: block;
-  height: 40px;
+  position: absolute;
+  top: -66.25px;
+  left: -8.4px;
+  height: 190.34px;
   width: auto;
+  display: block;
 }
 
 .principal__inicio-hit {
@@ -37,7 +45,7 @@
   top: 0;
   bottom: 0;
   left: 0;
-  width: 24%;
+  width: 19%;
   padding: 0;
   border: none;
   background: none;
@@ -48,8 +56,8 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 24%;
-  width: 25.5%;
+  left: 19%;
+  width: 21.69%;
   padding: 0;
   border: none;
   background: none;
@@ -60,12 +68,28 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 49.5%;
-  width: 27.9%;
+  left: 40.68%;
+  width: 24.01%;
   padding: 0;
   border: none;
   background: none;
   cursor: pointer;
+}
+
+.principal__clear-hit {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 64.69%;
+  width: 19.44%;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.principal__clear-hit:disabled {
+  cursor: default;
 }
 
 .principal__logout-hit {
@@ -73,20 +97,22 @@
   top: 0;
   bottom: 0;
   right: 0;
-  width: 24%;
+  width: 15.86%;
 }
 
 .principal__main {
   flex: 1;
+  min-height: 0;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
 }
 
 .principal__card {
   width: 92%;
   max-width: 1520px;
-  height: calc(75vh + 114px);
+  flex: 1;
+  min-height: 0;
   display: flex;
   border-radius: 16px;
   overflow: hidden;
@@ -103,11 +129,14 @@
 
 .principal__panel--left {
   flex: 0 0 32%;
+  min-width: 460px;
+  min-height: 0;
   background: #6384eb;
 }
 
 .principal__panel--right {
   flex: 1;
+  min-height: 0;
   background: #adcdf4;
   align-items: flex-end;
 }
@@ -143,7 +172,9 @@
 }
 
 .principal__upload-box {
-  flex: 0 0 50%;
+  flex: 0 1 auto;
+  aspect-ratio: 1 / 1;
+  min-height: 0;
   box-sizing: border-box;
   display: flex;
   background: #ffffff;
@@ -312,7 +343,7 @@
 .principal__generate-bg,
 .principal__choose-file-bg {
   display: block;
-  max-width: 160px;
+  max-width: 200px;
   height: auto;
 }
 
@@ -321,6 +352,7 @@
   position: absolute;
   inset: 0;
   display: flex;
+  white-space: nowrap;
   align-items: center;
   justify-content: center;
   font-family: 'Goldplay Medium', sans-serif;
@@ -333,7 +365,7 @@
 }
 
 .principal__choose-file-label {
-  font-size: var(--btn-elegir-size);
+  font-size: var(--btn-generar-size);
 }
 
 .principal__canvas {
@@ -342,11 +374,6 @@
   background: #ffffff;
   border-radius: 12px;
   overflow: hidden;
-  cursor: grab;
-}
-
-.principal__canvas--arrastrando {
-  cursor: grabbing;
 }
 
 .principal__canvas-contenido {
@@ -395,5 +422,5 @@
 .principal__zoom-value {
   font-family: 'Goldplay Regular', sans-serif;
   font-size: 0.85rem;
-  color: #4a5a86;
+  color: #4591dd;
 }

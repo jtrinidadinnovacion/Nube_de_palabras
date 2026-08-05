@@ -1,10 +1,17 @@
 <section class="principal">
   <header class="principal__header">
     <div class="principal__general-btns-wrap">
-      <img src="img/btn_generales.svg" alt="Opciones generales" class="principal__general-btns" />
-      <button type="button" class="principal__inicio-hit" aria-label="Inicio" (click)="mostrarModalDatos.set(true)"></button>
+      <img src="img/btn_generales.png" alt="Opciones generales" class="principal__general-btns" />
+      <button type="button" class="principal__inicio-hit" aria-label="Inicio" (click)="irAInicio()"></button>
       <button type="button" class="principal__save-hit" aria-label="Guardar" (click)="guardarNube()"></button>
       <button type="button" class="principal__about-hit" aria-label="Acerca de" (click)="mostrarAbout.set(true)"></button>
+      <button
+        type="button"
+        class="principal__clear-hit"
+        [disabled]="!palabras().length && !palabrasNube().length && !nombreArchivoSeleccionado()"
+        aria-label="Limpiar"
+        (click)="limpiar()"
+      ></button>
       <a routerLink="/" class="principal__logout-hit" aria-label="Salir"></a>
     </div>
   </header>
@@ -84,7 +91,7 @@
               type="file"
               accept=".pdf,.docx,.txt"
               class="principal__file-input"
-              (change)="alSeleccionarArchivo(campoArchivo.files)"
+              (change)="alSeleccionarArchivo(campoArchivo.files); campoArchivo.value = ''"
               hidden
             />
             <button type="button" class="principal__choose-file" (click)="campoArchivo.click()">
@@ -103,17 +110,12 @@
       <div class="principal__panel principal__panel--right">
         <div
           class="principal__canvas"
-          [class.principal__canvas--arrastrando]="arrastrandoLienzoActivo()"
           (wheel)="alScrollearEnLienzo($event)"
-          (mousedown)="iniciarArrastreLienzo($event)" 
-          (mousemove)="moverArrastreLienzo($event)"
-          (mouseup)="terminarArrastreLienzo()"
-          (mouseleave)="terminarArrastreLienzo()"
         >
           <div
             class="principal__canvas-contenido"
             #canvasEl
-            [style.transform]="'translate(' + panX() + 'px, ' + panY() + 'px) scale(' + (zoom() / 100) + ')'" /*hace mover la nube y hacer el scroll*/
+            [style.transform]="'scale(' + (zoom() / 100) + ')'" /*hace el zoom con el scroll*/
           >
             @for (palabra of palabrasNube(); track palabra.texto) {
               <span
@@ -128,7 +130,7 @@
         </div>
 
         <div class="principal__zoom">
-          <button type="button" class="principal__zoom-btn" aria-label="Reducir zoom" [disabled]="zoom() <= 0" (click)="reducirZoom()">
+          <button type="button" class="principal__zoom-btn" aria-label="Reducir zoom" [disabled]="zoom() <= 10" (click)="reducirZoom()">
             <img src="img/zoom_men.png" alt="" />
           </button>
           <span class="principal__zoom-value">{{ zoom() }}%</span>

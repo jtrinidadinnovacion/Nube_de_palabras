@@ -104,6 +104,7 @@
   left: -99999px;
   top: 0;
   width: 1123px;
+  height: 794px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -113,34 +114,34 @@
 .documento-exportar__header {
   display: flex;
   align-items: center;
-  padding: 28px 70px 0;
+  padding: 8px 70px 0 14px;
 }
 
 .documento-exportar__logo {
-  width: 40px;
+  width: 86px;
   height: auto;
 }
 
 .documento-exportar__titulo {
-  margin: 0;
+  margin: -8px 0 0 8px;
   font-family: 'Goldplay Bold', sans-serif;
-  font-size: 25px;
+  font-size: 30px;
   font-weight: 700;
   color: #6F88FC;
-  
 }
 
 .documento-exportar__nube-wrap {
-  flex:1;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
 .documento-exportar__nube{
-  position:relative;
-  transform:translateY(-15px) scale(.82);
-  transform-origin:center;
+  position: relative;
+  transform: scale(.82);
+  transform-origin: center center;
 }
 
 .documento-exportar__palabra {
@@ -155,12 +156,15 @@
   box-sizing:border-box;
   background:#DDEDFE;
   padding:22px 35px 26px;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
 }
 
 .documento-exportar__fila {
   display: flex;
-  gap: 30px;
-  justify-content: space-between;
+  gap: 48px;
+  justify-content: flex-start;
 }
 
 .documento-exportar__campo{
@@ -168,15 +172,40 @@
   min-width:0;
   display:flex;
   align-items:center;
-  gap:8px;
+  gap:6px;
 }
 
 .documento-exportar__campo--chico {
-  flex: 0 0 140px;
+  flex: 0 0 auto;
+}
+
+.documento-exportar__campo--chico .documento-exportar__valor {
+  flex: 0 0 44px;
+  width: 44px;
+  justify-content: center;
 }
 
 .documento-exportar__campo--ancho {
-  flex: 2;
+  flex: 1.4;
+}
+
+.documento-exportar__campo--tema {
+  flex: 0 0 auto;
+  margin-left: -1px;   
+}
+
+.documento-exportar__campo--tema .documento-exportar__valor {
+  width: 450px;
+  flex: 0 0 450px;
+}
+
+.documento-exportar__campo--asignatura {
+  flex: 0 0 auto;
+}
+
+.documento-exportar__campo--asignatura .documento-exportar__valor {
+  width: 350px;  
+  flex: 0 0 350px;
 }
 
 .documento-exportar__etiqueta{
@@ -198,14 +227,15 @@
   min-width:0;
   display:flex;
   align-items:center;
-  height:34px;
-  padding:0 12px;
+  min-height:26px;
+  padding:4px 8px;
   background:#fff;
-  border-radius:8px;
+  border-radius:4px;
   font-family:'Goldplay Medium',sans-serif;
   font-size:14px;
   color:#222;
-  white-space:nowrap;
+  white-space:normal;
+  overflow-wrap:break-word;
   overflow:hidden;
   text-overflow:ellipsis;
   box-sizing:border-box;

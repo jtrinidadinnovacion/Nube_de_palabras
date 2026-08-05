@@ -1,0 +1,68 @@
+/* Franja invisible para poder arrastrar la ventana de Electron desde cualquier punto de la parte superior
+(no tiene efecto en un navegador normal, solo dentro de Electron). */
+.app-drag-region {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  -webkit-app-region: drag;
+  z-index: 1999;
+}
+
+.app-titlebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 0.6rem 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem;
+  z-index: 2000;
+  -webkit-app-region: no-drag;
+}
+
+.app-titlebar__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 50%;
+  border: 2px solid var(--btn-accent);
+  background: var(--btn-fill);
+  color: var(--btn-accent);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.app-titlebar__btn svg {
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+}
+
+.app-titlebar__btn:hover {
+  background: var(--btn-fill-hover);
+}
+
+.app-titlebar__btn--mini {
+  --btn-accent: #9a9aa8;
+  --btn-fill: #eceef2;
+  --btn-fill-hover: #dee1e7;
+}
+
+.app-titlebar__btn--max,
+.app-titlebar__btn--cuadros {
+  --btn-accent: #a879f6;
+  --btn-fill: #f0e7fd;
+  --btn-fill-hover: #e0cdfa;
+}
+
+.app-titlebar__btn--cerrar {
+  --btn-accent: #e5697a;
+  --btn-fill: #fbe6e9;
+  --btn-fill-hover: #f7ccd2;
+}

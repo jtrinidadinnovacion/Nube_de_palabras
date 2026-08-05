@@ -6,6 +6,12 @@
       "runtimeExecutable": "C:\\Program Files\\nodejs\\npm.cmd",
       "runtimeArgs": ["run", "start"],
       "port": 4200
+    },
+    {
+      "name": "static-build-preview",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8234", "--directory", "dist/Nube_de_Palabras/browser"],
+      "port": 8234
     }
   ]
 }

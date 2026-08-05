@@ -13,7 +13,7 @@
 
         <label class="modal-datos__field modal-datos__field--small">
           <span>Semestre:</span>
-          <input type="text" name="semestre" [(ngModel)]="datos.semestre" required maxlength="50" placeholder="Semestre" />
+          <input type="text" name="semestre" [(ngModel)]="datos.semestre" (input)="filtrarSoloNumeros($event)" required maxlength="50" placeholder="Semestre" inputmode="numeric" pattern="[0-9]*" />
         </label>
       </div>
 

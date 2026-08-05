@@ -14,18 +14,23 @@
 
 .about__close {
   position: absolute;
-  top: 2rem;
-  right: 2rem;
+  top: 0.75rem;
+  right: 0.75rem;
   padding: 0;
   border: none;
   background: none;
-  color: #ffffff;
+  color: #8a8a99;
   font-size: 1.75rem;
   line-height: 1;
   cursor: pointer;
 }
 
+.about__close:hover {
+  color: #333333;
+}
+
 .about__dialog {
+  position: relative;
   width: min(92%, 900px);
   max-height: 85vh;
   overflow-y: auto;

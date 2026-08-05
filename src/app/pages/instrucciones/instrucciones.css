@@ -10,7 +10,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: 3rem 6rem;
+  padding: 3.5rem 6rem 3rem;
   overflow: hidden;
   background:
     radial-gradient(circle at -4.5% 99%, #4f3193 0%, transparent 20%),
@@ -134,7 +134,7 @@
 
 @media (max-width: 900px) {
   .instrucciones {
-    padding: 2rem;
+    padding: 3.5rem 2rem 2rem;
   }
 
   .instrucciones__body {

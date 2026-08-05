@@ -2,7 +2,7 @@
 
 @font-face {
   font-family: 'Goldplay Bold';
-  src: url('/fonts/goldplay_bold.otf') format('opentype');
+  src: url('../public/fonts/goldplay_bold.otf') format('opentype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -10,7 +10,7 @@
 
 @font-face {
   font-family: 'Goldplay Medium';
-  src: url('/fonts/goldplay_medium.otf') format('opentype');
+  src: url('../public/fonts/goldplay_medium.otf') format('opentype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -18,7 +18,7 @@
 
 @font-face {
   font-family: 'Goldplay Semibold';
-  src: url('/fonts/goldplay_semibold.otf') format('opentype');
+  src: url('../public/fonts/goldplay_semibold.otf') format('opentype');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -26,7 +26,7 @@
 
 @font-face {
   font-family: 'Goldplay Regular';
-  src: url('/fonts/goldplay_regular.otf') format('opentype');
+  src: url('../public/fonts/goldplay_regular.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -34,7 +34,7 @@
 
 @font-face {
   font-family: 'Goldplay Light';
-  src: url('/fonts/goldplay_light.otf') format('opentype');
+  src: url('../public/fonts/goldplay_light.otf') format('opentype');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -48,7 +48,6 @@
   --btn-saltar-size: 18px;
   --btn-siguiente-size: 14px;
   --btn-generar-size: 16px;
-  --btn-elegir-size: 14px;
 }
 
 /* =========================================
@@ -60,7 +59,6 @@
     --btn-saltar-size: 20px;
     --btn-siguiente-size: 15px;
     --btn-generar-size: 18px;
-    --btn-elegir-size: 15px;
   }
 }
 
@@ -73,7 +71,6 @@
     --btn-saltar-size: 24px;
     --btn-siguiente-size: 17px;
     --btn-generar-size: 21px;
-    --btn-elegir-size: 17px;
   }
 }
 
@@ -86,7 +83,6 @@
     --btn-saltar-size: 28px;
     --btn-siguiente-size: 20px;
     --btn-generar-size: 25px;
-    --btn-elegir-size: 20px;
   }
 }
 
@@ -99,7 +95,6 @@
     --btn-saltar-size: 30px;
     --btn-siguiente-size: 21px;
     --btn-generar-size: 26px;
-    --btn-elegir-size: 21px;
   }
 }
 
@@ -112,7 +107,6 @@
     --btn-saltar-size: 32px;
     --btn-siguiente-size: 22px;
     --btn-generar-size: 28px;
-    --btn-elegir-size: 22px;
   }
 }
 
@@ -120,4 +114,22 @@ html,
 body {
   margin: 0;
   padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+input,
+textarea,
+[contenteditable='true'] {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+img {
+  -webkit-user-drag: none;
 }

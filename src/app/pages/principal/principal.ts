@@ -30,7 +30,7 @@ const SEPARACION_ENTRE_PUNTOS = 6;/*  Qué tan seguido pasa un punto nuevo al re
 const PASO_DE_RADIO = 3;/* Cuánto crece el radio de la espiral entre un anillo y el siguiente. */
 const TAMANO_CELDA_OCUPACION = 4; /* Tamaño de cada celda de la cuadrícula de ocupación*/
 const FACTOR_COMPACTACION = 1;/*Define qué tan cerca pueden quedar las palabras sin encimarse.*/
-const ZOOM_MINIMO = 0;
+const ZOOM_MINIMO = 10;
 const ZOOM_MAXIMO = 100;
 const PASO_ZOOM = 10;
 
@@ -46,14 +46,7 @@ export class Principal {
   protected readonly mostrarExportado = signal(false);
   protected readonly archivoExportado = signal(false);
   protected readonly datosNube = signal<DatosNube | null>(null);
-  protected readonly zoom = signal(50);
-  protected readonly panX = signal(0);
-  protected readonly panY = signal(0);
-  protected readonly arrastrandoLienzoActivo = signal(false);
-  private inicioArrastreX = 0;
-  private inicioArrastreY = 0;
-  private panInicialX = 0;
-  private panInicialY = 0;
+  protected readonly zoom = signal(60);
   protected readonly modoEntrada = signal<'texto' | 'archivo'>('texto');   // 'texto' = el usuario escribe palabras una por una.  'archivo' = el usuario sube un documento.
   protected readonly palabras = signal<string[]>([]);
   protected readonly nombreArchivoSeleccionado = signal<string | null>(null);
@@ -68,6 +61,32 @@ export class Principal {
   private lecturaEnProgreso: Promise<void> | null = null;
   private lectoresPrecargados = false;// Indica si ya se solicitaron los lectores de PDF/Word para evitar volver a cargarlos cada vez que se cambia de modo.
 
+  protected irAInicio(): void {
+    this.mostrarModalDatos.set(true);
+    this.datosNube.set(null);
+    this.palabras.set([]);
+    this.palabrasNube.set([]);
+    this.tamanoLienzo.set(null);
+    this.archivoExportado.set(false);
+    this.nombreArchivoSeleccionado.set(null);
+    this.errorArchivo.set(null);
+    this.leyendoArchivo.set(false);
+    this.lecturaEnProgreso = null;
+    this.modoEntrada.set('texto');
+    this.zoom.set(60);
+  }
+
+  protected limpiar(): void {
+    this.palabras.set([]);
+    this.palabrasNube.set([]);
+    this.tamanoLienzo.set(null);
+    this.archivoExportado.set(false);
+    this.nombreArchivoSeleccionado.set(null);
+    this.errorArchivo.set(null);
+    this.leyendoArchivo.set(false);
+    this.lecturaEnProgreso = null;
+  }
+
   /* Cambia entre "Añadir texto" y "Subir archivo". Al entrar al modo "archivo" se precargan los lectores de PDF y Word para reducir el tiempo de espera al seleccionar un archivo. */
   protected establecerModo(modo: 'texto' | 'archivo'): void {
     this.modoEntrada.set(modo);
@@ -79,24 +98,10 @@ export class Principal {
 
   protected aumentarZoom(): void {
     this.zoom.update((valor) => Math.min(ZOOM_MAXIMO, valor + PASO_ZOOM));
-    this.limitarPan();
   }
 
   protected reducirZoom(): void {
     this.zoom.update((valor) => Math.max(ZOOM_MINIMO, valor - PASO_ZOOM));
-    this.limitarPan();
-  }
-
-  private limitarPan(): void {
-    const tamano = this.tamanoLienzo();
-    if (!tamano) {
-      return;
-    }
-    const factor = this.zoom() / 100;
-    const maxPanX = Math.max(0, (tamano.ancho * factor - tamano.ancho) / 2);
-    const maxPanY = Math.max(0, (tamano.alto * factor - tamano.alto) / 2);
-    this.panX.update((valor) => Math.min(maxPanX, Math.max(-maxPanX, valor)));
-    this.panY.update((valor) => Math.min(maxPanY, Math.max(-maxPanY, valor)));
   }
 
   protected alScrollearEnLienzo(evento: WheelEvent): void { /*(wheel) movimiento de la rueda del mouse.*/
@@ -110,28 +115,6 @@ export class Principal {
 
   protected alExportarConExito(): void {
     this.archivoExportado.set(true); /*set: asignarle un nuevo valor*/
-  }
-
-  protected iniciarArrastreLienzo(evento: MouseEvent): void {
-    this.arrastrandoLienzoActivo.set(true);
-    this.inicioArrastreX = evento.clientX;
-    this.inicioArrastreY = evento.clientY;
-    this.panInicialX = this.panX();
-    this.panInicialY = this.panY();
-  }
-
-  protected moverArrastreLienzo(evento: MouseEvent): void {
-    if (!this.arrastrandoLienzoActivo()) {
-      return;
-    }
-    this.panX.set(this.panInicialX + (evento.clientX - this.inicioArrastreX));
-    this.panY.set(this.panInicialY + (evento.clientY - this.inicioArrastreY));
-    this.limitarPan();
-  }
-
-  /* Suelta el mouse: deja de arrastrar. */
-  protected terminarArrastreLienzo(): void {
-    this.arrastrandoLienzoActivo.set(false);
   }
 
   /* Al presionar Enter en el campo de texto. Si el usuario escribió o pegó varias palabras separadas por comas, espacios o saltos de línea, las divide y las
@@ -219,7 +202,8 @@ export class Principal {
         this.errorArchivo.set('No encontramos palabras dentro de ese archivo.');
       }
       this.palabras.set(palabrasDelArchivo);
-    } catch {
+    } catch (error) {
+      console.error('No se pudo leer el archivo:', error); // Detalle real del fallo, para poder diagnosticarlo desde la consola.
       this.errorArchivo.set('No se pudo leer el archivo. Intenta con otro .pdf, .docx o .txt.');
       this.palabras.set([]);
     } finally {
@@ -237,10 +221,7 @@ export class Principal {
   /**Se carga la librería PDF.js de forma dinámica y se configura su Worker para poder leer archivos PDF de manera eficiente sin afectar el rendimiento de la aplicación. */
   private async extraerTextoDePdf(archivo: File): Promise<string> {
     const pdfjsLib = await import('pdfjs-dist');
-    pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-      'pdfjs-dist/build/pdf.worker.min.mjs',
-      import.meta.url
-    ).toString();
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'assets/pdf.worker.min.mjs';
 
     const datosArchivo = await archivo.arrayBuffer();
     const documento = await pdfjsLib.getDocument({ data: datosArchivo }).promise;
@@ -256,12 +237,12 @@ export class Principal {
   }
 
   private async extraerTextoDeDocx(archivo: File): Promise<string> {
-    const mammoth = await import('mammoth'); /*librería para procesar archivos de Word.*/
+    const modulo = await import('mammoth'); /*librería para procesar archivos de Word.*/
+    const mammoth = ('extractRawText' in modulo ? modulo : (modulo as { default: typeof modulo }).default);
     const datosArchivo = await archivo.arrayBuffer(); /**Convierte el archivo de Word a un formato que puede ser leído */
     const resultado = await mammoth.extractRawText({ arrayBuffer: datosArchivo });/**Mammoth lee el contenido del documento y extrae únicamente el texto. */
     return resultado.value;
   }
-
 
   protected async generar(): Promise<void> {
     if (this.generando()) {
@@ -284,15 +265,14 @@ export class Principal {
 
     try {
       await Promise.all([this.cargarMascara(ancho, alto), document.fonts.load("700 100px 'Goldplay Bold'")]);
-    } catch {
+    } catch (error) {
+      console.error('No se pudo generar la nube:', error); // Detalle real del fallo, para poder diagnosticarlo desde la consola.
       this.generando.set(false);
       return;
     }
 
     this.palabrasNube.set(this.acomodarPalabras(palabras, ancho, alto));
     this.tamanoLienzo.set({ ancho, alto });
-    this.panX.set(0);
-    this.panY.set(0);
     this.generando.set(false);
   }
 
@@ -615,7 +595,7 @@ export class Principal {
       let altoPalabra = 0;
       let lugar: { x: number; y: number } | null = null;
 
-      
+
       while (tamanoIntento >= tamanoMinimoAbsoluto) {// Intento con el tamaño ideal y, si no cabe, se achica.
         contextoMedicion.font = `700 ${tamanoIntento}px 'Goldplay Bold', sans-serif`;
         anchoPalabra = contextoMedicion.measureText(palabra.texto).width;
