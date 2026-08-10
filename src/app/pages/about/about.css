@@ -16,17 +16,17 @@
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
+  display: flex;
   padding: 0;
   border: none;
   background: none;
-  color: #8a8a99;
-  font-size: 1.75rem;
-  line-height: 1;
   cursor: pointer;
 }
 
-.about__close:hover {
-  color: #333333;
+.about__close img {
+  display: block;
+  width: 32px;
+  height: 32px;
 }
 
 .about__dialog {

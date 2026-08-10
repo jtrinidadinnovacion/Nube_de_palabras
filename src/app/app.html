@@ -1,34 +1,20 @@
 <div class="app-drag-region"></div>
-<div class="app-titlebar">
-  <button type="button" class="app-titlebar__btn app-titlebar__btn--mini" aria-label="Minimizar" (click)="minimizar()">
-    <svg viewBox="0 0 24 24" fill="none">
-      <line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
-    </svg>
-  </button>
-  <button
-    type="button"
-    class="app-titlebar__btn"
-    [class.app-titlebar__btn--max]="!pantallaCompleta()"
-    [class.app-titlebar__btn--cuadros]="pantallaCompleta()"
-    [attr.aria-label]="pantallaCompleta() ? 'Restaurar' : 'Maximizar'"
-    (click)="alternarPantallaCompleta()"
-  >
-    @if (!pantallaCompleta()) {
-      <svg viewBox="0 0 24 24" fill="none">
-        <rect x="5" y="5" width="14" height="14" rx="2" stroke="currentColor" stroke-width="2.2" />
-      </svg>
-    } @else {
-      <svg viewBox="0 0 24 24" fill="none">
-        <rect x="9" y="4" width="11" height="11" rx="2" stroke="currentColor" stroke-width="2" />
-        <rect x="4" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="2" />
-      </svg>
-    }
-  </button>
-  <button type="button" class="app-titlebar__btn app-titlebar__btn--cerrar" aria-label="Cerrar" (click)="cerrar()">
-    <svg viewBox="0 0 24 24" fill="none">
-      <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" />
-      <line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" />
-    </svg>
-  </button>
+<div class="app-titlebar" [class.app-titlebar--principal]="enPrincipal()">
+  <div class="app-titlebar__grupo" [class.app-titlebar__grupo--principal]="enPrincipal()">
+    <button type="button" class="app-titlebar__icono-btn" aria-label="Minimizar" (click)="minimizar()">
+      <img [src]="enPrincipal() ? 'img/prin_mini.png' : 'img/ini_mini.png'" alt="" />
+    </button>
+    <button
+      type="button"
+      class="app-titlebar__icono-btn"
+      [attr.aria-label]="pantallaCompleta() ? 'Restaurar' : 'Maximizar'"
+      (click)="alternarPantallaCompleta()"
+    >
+      <img [src]="iconoMaximizar()" alt="" />
+    </button>
+    <button type="button" class="app-titlebar__icono-btn app-titlebar__icono-btn--cerrar" aria-label="Cerrar" (click)="cerrar()">
+      <img src="img/btn_cerrar.png" alt="" />
+    </button>
+  </div>
 </div>
 <router-outlet />

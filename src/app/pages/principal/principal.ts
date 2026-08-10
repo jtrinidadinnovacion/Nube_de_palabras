@@ -1,8 +1,9 @@
-import { Component, ElementRef, signal, viewChild } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { AfterViewInit, Component, ElementRef, OnDestroy, effect, inject, signal, viewChild } from '@angular/core';
+import Swal from 'sweetalert2';
 import { ModalDatos } from '../modal_datos/modal_datos';
 import { ModalExportado } from '../modal_exportado/modal_exportado';
 import { About } from '../about/about';
+import { TitlebarService } from '../../services/titlebar.service';
 import type { DatosNube } from '../models/modal-datos';
 import type { PalabraNube } from '../models/principal';
 
@@ -33,14 +34,17 @@ const FACTOR_COMPACTACION = 1;/*Define qué tan cerca pueden quedar las palabras
 const ZOOM_MINIMO = 10;
 const ZOOM_MAXIMO = 100;
 const PASO_ZOOM = 10;
+const DEMORA_REACOMODO_MS = 60; /* Cuánto se espera tras el último cambio de tamaño antes de recalcular la nube. Mientras tanto la nube queda oculta (breve, para no notarse). */
 
 @Component({
   selector: 'app-principal',
-  imports: [ModalDatos, ModalExportado, About, RouterLink],
+  imports: [ModalDatos, ModalExportado, About],
   templateUrl: './principal.html',
   styleUrl: './principal.css'
 })
-export class Principal {
+export class Principal implements AfterViewInit, OnDestroy {
+  private readonly titlebarService = inject(TitlebarService);
+
   protected readonly mostrarModalDatos = signal(true);
   protected readonly mostrarAbout = signal(false);
   protected readonly mostrarExportado = signal(false);
@@ -55,11 +59,69 @@ export class Principal {
   protected readonly errorArchivo = signal<string | null>(null);
   protected readonly palabrasNube = signal<PalabraNube[]>([]);   // Palabras ya acomodadas dentro de la nube, para pintarse en el lienzo derecho.
   protected readonly generando = signal(false);
+  protected readonly reacomodando = signal(false); /* true justo entre el momento en que el lienzo cambia de tamaño de verdad y el momento en que la nube termina de recalcularse; oculta la nube ese instante (breve, ver DEMORA_REACOMODO) para no mostrarla estirada o descuadrada mientras se recalcula. */
   private readonly lienzoRef = viewChild<ElementRef<HTMLDivElement>>('canvasEl');   // Referencia al <div> del lienzo blanco derecho (con #canvasEl en el HTML).
   private mascara: Mascara | null = null;   // Máscara de la nube ya cargada, para no volver a leer la imagen en cada clic..
   protected readonly tamanoLienzo = signal<{ ancho: number; alto: number } | null>(null); // Tamaño del lienzo donde se acomodaron las palabras la última vez que se generó la nube.
   private lecturaEnProgreso: Promise<void> | null = null;
   private lectoresPrecargados = false;// Indica si ya se solicitaron los lectores de PDF/Word para evitar volver a cargarlos cada vez que se cambia de modo.
+  private observadorTamano: ResizeObserver | null = null;
+  private regeneracionPendiente: ReturnType<typeof setTimeout> | null = null; /* Las palabras se colocan con coordenadas fijas en píxeles; si la ventana cambia de tamaño (p. ej. al maximizarla) hay que volver a acomodarlas para que sigan centradas. */
+  /* El tamaño real del lienzo, reportado directamente por ResizeObserver en cuanto el navegador termina de calcular el layout.
+  Usamos esto en vez de leer clientWidth/clientHeight "a mano": si se lee justo al maximizar la ventana, clientWidth puede
+  devolver todavía el tamaño anterior (más pequeño) porque el navegador no ha terminado de recalcular el layout. */
+  private readonly tamanoLienzoActual = signal<{ ancho: number; alto: number } | null>(null);
+
+  constructor() {
+    /* Le avisa a la barra de la ventana (app.ts) que "Acerca de" está abierto, para que use sus propias imágenes en vez de las de "principal". */
+    effect(() => this.titlebarService.mostrandoAbout.set(this.mostrarAbout()));
+  }
+
+  /* Observa el lienzo para saber su tamaño real en todo momento y para volver a acomodar la nube cuando ese tamaño cambie (maximizar/restaurar la ventana, cambios de resolución, etc.). */
+  ngAfterViewInit(): void {
+    const lienzo = this.lienzoRef()?.nativeElement;
+    if (!lienzo) {
+      return;
+    }
+    this.observadorTamano = new ResizeObserver((entradas) => {
+      const rectángulo = entradas[0]?.contentRect;
+      if (!rectángulo) {
+        return;
+      }
+      const nuevoTamano = { ancho: Math.floor(rectángulo.width), alto: Math.floor(rectángulo.height) };
+      this.tamanoLienzoActual.set(nuevoTamano);
+      this.alCambiarTamanoDelLienzo(nuevoTamano);
+    });
+    this.observadorTamano.observe(lienzo);
+  }
+
+  ngOnDestroy(): void {
+    this.observadorTamano?.disconnect();
+    if (this.regeneracionPendiente !== null) {
+      clearTimeout(this.regeneracionPendiente);
+    }
+  }
+
+  /* Si ya hay una nube dibujada y el lienzo cambió de tamaño de verdad, la oculta al instante (así no se ve el momento en que sus
+  posiciones viejas quedan descuadradas dentro del nuevo tamaño) y espera un momento breve a que el tamaño se asiente antes de
+  recalcularla, para no relanzar el cálculo en cada pixel mientras se arrastra la ventana. */
+  private alCambiarTamanoDelLienzo(nuevoTamano: { ancho: number; alto: number }): void {
+    const tamanoUsado = this.tamanoLienzo();
+    if (!this.palabrasNube().length || !tamanoUsado) {
+      return;
+    }
+    if (tamanoUsado.ancho === nuevoTamano.ancho && tamanoUsado.alto === nuevoTamano.alto) {
+      return;
+    }
+    this.reacomodando.set(true);
+    if (this.regeneracionPendiente !== null) {
+      clearTimeout(this.regeneracionPendiente);
+    }
+    this.regeneracionPendiente = setTimeout(() => {
+      this.regeneracionPendiente = null;
+      void this.generar();
+    }, DEMORA_REACOMODO_MS);
+  }
 
   protected irAInicio(): void {
     this.mostrarModalDatos.set(true);
@@ -76,7 +138,22 @@ export class Principal {
     this.zoom.set(60);
   }
 
-  protected limpiar(): void {
+  protected async confirmarLimpiar(): Promise<void> {
+    const resultado = await Swal.fire({
+      icon: 'warning',
+      iconHtml: '<img src="img/img_alerta.png" alt="" />',
+      title: '¿Seguro que quieres limpiar?',
+      text: 'Se borrarán los datos que se ingresaron.',
+      showCancelButton: true,
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+    });
+    if (resultado.isConfirmed) {
+      this.limpiar();
+    }
+  }
+
+  private limpiar(): void {
     this.palabras.set([]);
     this.palabrasNube.set([]);
     this.tamanoLienzo.set(null);
@@ -260,20 +337,22 @@ export class Principal {
     }
 
     this.generando.set(true); /**prepara la generación de la nube */
-    const ancho = Math.floor(lienzo.clientWidth);
-    const alto = Math.floor(lienzo.clientHeight);
+    await document.fonts.ready.catch(() => undefined);
+    const { ancho, alto } = await this.obtenerTamanoRealDelLienzo(lienzo);
 
     try {
       await Promise.all([this.cargarMascara(ancho, alto), document.fonts.load("700 100px 'Goldplay Bold'")]);
     } catch (error) {
       console.error('No se pudo generar la nube:', error); // Detalle real del fallo, para poder diagnosticarlo desde la consola.
       this.generando.set(false);
+      this.reacomodando.set(false);
       return;
     }
 
     this.palabrasNube.set(this.acomodarPalabras(palabras, ancho, alto));
     this.tamanoLienzo.set({ ancho, alto });
     this.generando.set(false);
+    this.reacomodando.set(false);
   }
 
   protected alGuardarDatosModal(datos: DatosNube): void {
@@ -292,6 +371,15 @@ export class Principal {
     }
 
     this.mostrarExportado.set(true);
+  }
+
+  /** Da el tamaño real del lienzo según lo reportó ResizeObserver (fuente confiable, ya post-layout). Si por algún motivo
+   * todavía no reportó nada (p. ej. el primer cuadro nunca llegó a dispararse), cae de último recurso a clientWidth/clientHeight. */
+  private async obtenerTamanoRealDelLienzo(lienzo: HTMLElement): Promise<{ ancho: number; alto: number }> {
+    for (let intento = 0; intento < 10 && !this.tamanoLienzoActual(); intento++) {
+      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+    }
+    return this.tamanoLienzoActual() ?? { ancho: Math.floor(lienzo.clientWidth), alto: Math.floor(lienzo.clientHeight) };
   }
 
   /** Dibuja la imagen de la nube en un canvas invisible del tamaño del lienzo real, guarda sus pixeles y arma la tabla de sumas acumuladas (ver `Mascara`). */

@@ -10,34 +10,30 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  padding: 3.5rem 2rem 1.5rem;
+  padding: 2.8rem 2rem 1.5rem;
   background: url('../../../../public/img/fondo_nubes.png') center / cover no-repeat;
 }
 
 .principal__header {
+  box-sizing: border-box;
   width: 92%;
   max-width: 1520px;
   margin: 0 auto 1.5rem;
+  padding-right: 3rem; /* deja un espacio chico y parejo antes de la esquina donde siempre está la barra de la ventana (minimizar/maximizar/cerrar) */
   display: flex;
   justify-content: flex-end;
 }
 
-/* La imagen btn_generales.png trae bastante margen transparente alrededor de la píldora;
-este contenedor recorta la vista para mostrar solo la píldora, ya al tamaño final. */
 .principal__general-btns-wrap {
   position: relative;
-  width: 487.96px;
   height: 44px;
-  overflow: hidden;
+  width: max-content;
 }
 
 .principal__general-btns {
-  position: absolute;
-  top: -66.25px;
-  left: -8.4px;
-  height: 190.34px;
-  width: auto;
   display: block;
+  height: 100%;
+  width: auto; /* se ajusta sola a la proporción real de btn_generales.png, sin medidas fijas frágiles */
 }
 
 .principal__inicio-hit {
@@ -45,7 +41,7 @@ este contenedor recorta la vista para mostrar solo la píldora, ya al tamaño fi
   top: 0;
   bottom: 0;
   left: 0;
-  width: 19%;
+  width: 22.6%;
   padding: 0;
   border: none;
   background: none;
@@ -56,8 +52,8 @@ este contenedor recorta la vista para mostrar solo la píldora, ya al tamaño fi
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 19%;
-  width: 21.69%;
+  left: 22.6%;
+  width: 25.8%;
   padding: 0;
   border: none;
   background: none;
@@ -68,8 +64,8 @@ este contenedor recorta la vista para mostrar solo la píldora, ya al tamaño fi
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 40.68%;
-  width: 24.01%;
+  left: 48.4%;
+  width: 28.6%;
   padding: 0;
   border: none;
   background: none;
@@ -80,8 +76,8 @@ este contenedor recorta la vista para mostrar solo la píldora, ya al tamaño fi
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 64.69%;
-  width: 19.44%;
+  left: 77%;
+  width: 23%;
   padding: 0;
   border: none;
   background: none;
@@ -90,14 +86,6 @@ este contenedor recorta la vista para mostrar solo la píldora, ya al tamaño fi
 
 .principal__clear-hit:disabled {
   cursor: default;
-}
-
-.principal__logout-hit {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: 15.86%;
 }
 
 .principal__main {
@@ -343,7 +331,7 @@ este contenedor recorta la vista para mostrar solo la píldora, ya al tamaño fi
 .principal__generate-bg,
 .principal__choose-file-bg {
   display: block;
-  max-width: 200px;
+  max-width: 190px;
   height: auto;
 }
 
@@ -382,6 +370,13 @@ este contenedor recorta la vista para mostrar solo la píldora, ya al tamaño fi
   height: 100%;
   transform-origin: center center;
   user-select: none;
+  opacity: 1;
+  transition: opacity 0.12s ease-out;
+}
+
+.principal__canvas-contenido--oculta {
+  opacity: 0;
+  transition: none; /* se oculta de inmediato, sin fundido, para no ver el instante en que queda descuadrada; solo el regreso (arriba) se anima */
 }
 
 .principal__cloud-word {

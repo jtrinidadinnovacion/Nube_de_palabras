@@ -2,6 +2,7 @@
   <div class="modal-exportado__dialog">
     @if (exportando()) {
     <div class="modal-exportado__cargando">
+      <img src="img/img_expo.png" alt="" class="modal-exportado__cargando-icono" />
       <p class="modal-exportado__mensaje">Exportando tu nube a PDF…</p>
     </div>
     } @else if (error()) {

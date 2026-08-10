@@ -27,6 +27,13 @@
   text-align: center;
 }
 
+.modal-exportado__cargando-icono {
+  display: block;
+  width: 110px;
+  height: auto;
+  margin: 0 auto 1.25rem;
+}
+
 .modal-exportado__imagen {
   display: block;
   width: 100%;
@@ -140,7 +147,7 @@
 
 .documento-exportar__nube{
   position: relative;
-  transform: scale(.82);
+  transform: scale(1.15);
   transform-origin: center center;
 }
 
@@ -154,7 +161,7 @@
 .documento-exportar__footer{
   width:100%;
   box-sizing:border-box;
-  background:#DDEDFE;
+  background:#ADCDF4;
   padding:22px 35px 26px;
   display:flex;
   flex-direction:column;

@@ -1,5 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import 'sweetalert2/dist/sweetalert2.min.css';
+
 @font-face {
   font-family: 'Goldplay Bold';
   src: url('../public/fonts/goldplay_bold.otf') format('opentype');
@@ -40,6 +42,62 @@
   font-display: swap;
 }
 
+/* SweetAlert2 se agrega directo al <body>, fuera de los componentes, por eso sus estilos van aquí en el global. */
+.swal2-popup {
+  font-family: 'Goldplay Regular', sans-serif;
+  border-radius: 20px;
+}
+
+.swal2-title {
+  font-family: 'Goldplay Bold', sans-serif;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1.5;
+  letter-spacing: 0;
+  color: #1DD7B9;
+}
+
+.swal2-html-container {
+  font-family: 'Goldplay Regular', sans-serif;
+  font-size: 20px;
+}
+
+/* El ícono de advertencia lo reemplazamos por img_alerta.png (ver iconHtml en los Swal.fire); aquí solo se
+quita el círculo/borde que SweetAlert2 dibuja por defecto alrededor del ícono, y se acorta el margen que trae
+por default (dejaba mucho espacio entre el ícono y el título). */
+.swal2-icon.swal2-warning {
+  border-color: transparent;
+  color: transparent;
+  margin: 0.75em auto 0.75em;
+}
+
+.swal2-icon.swal2-warning .swal2-icon-content img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+}
+
+.swal2-confirm,
+.swal2-cancel {
+  font-family: 'Goldplay Medium', sans-serif !important;
+}
+
+.swal2-styled.swal2-confirm {
+  background-color: #21A6D8 !important;
+  border-radius: 999px;
+  padding: 0.65rem 1.85rem;
+  box-shadow: none !important;
+}
+
+.swal2-styled.swal2-cancel {
+  background-color: #ffffff !important;
+  color: #21A6D8 !important;
+  border: 2px solid #21A6D8;
+  border-radius: 999px;
+  padding: 0.6rem 1.85rem;
+  box-shadow: none !important;
+}
+
 /* =========================================
    1. CELULAR CHICO (base, hasta 575px)
 ========================================= */
@@ -47,7 +105,7 @@
   --btn-comenzar-size: 18px;
   --btn-saltar-size: 18px;
   --btn-siguiente-size: 14px;
-  --btn-generar-size: 16px;
+  --btn-generar-size: 15px;
 }
 
 /* =========================================
@@ -58,7 +116,7 @@
     --btn-comenzar-size: 20px;
     --btn-saltar-size: 20px;
     --btn-siguiente-size: 15px;
-    --btn-generar-size: 18px;
+    --btn-generar-size: 17px;
   }
 }
 
@@ -70,7 +128,7 @@
     --btn-comenzar-size: 24px;
     --btn-saltar-size: 24px;
     --btn-siguiente-size: 17px;
-    --btn-generar-size: 21px;
+    --btn-generar-size: 20px;
   }
 }
 
@@ -82,7 +140,7 @@
     --btn-comenzar-size: 28px;
     --btn-saltar-size: 28px;
     --btn-siguiente-size: 20px;
-    --btn-generar-size: 25px;
+    --btn-generar-size: 24px;
   }
 }
 
@@ -94,7 +152,7 @@
     --btn-comenzar-size: 30px;
     --btn-saltar-size: 30px;
     --btn-siguiente-size: 21px;
-    --btn-generar-size: 26px;
+    --btn-generar-size: 25px;
   }
 }
 
@@ -106,7 +164,7 @@
     --btn-comenzar-size: 32px;
     --btn-saltar-size: 32px;
     --btn-siguiente-size: 22px;
-    --btn-generar-size: 28px;
+    --btn-generar-size: 27px;
   }
 }
 

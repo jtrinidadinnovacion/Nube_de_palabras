@@ -70,7 +70,7 @@ export class ModalExportado implements OnChanges {
     const x = (anchoPagina - anchoImagen) / 2;
     const y = (altoPagina - altoImagen) / 2;
 
-    documento.addImage(imagen, 'JPEG', x, y, anchoImagen, altoImagen);
+    documento.addImage(imagen, 'PNG', x, y, anchoImagen, altoImagen);
     documento.save(this.nombreArchivoParaGuardar());
   }
 
@@ -101,9 +101,11 @@ export class ModalExportado implements OnChanges {
     const elemento = this.documentoRef()!.nativeElement;
     this.centrarNube(elemento);
     const { default: html2canvas } = await import('html2canvas');
-    const canvas = await html2canvas(elemento, { backgroundColor: '#ffffff', scale: 3 });
+    /* scale:4 y PNG (sin pérdida) en vez de JPEG: se ve más nítido, especialmente el texto de la nube.
+    Pesa más el PDF, pero eso ya no es problema (límite de 10MB con espacio de sobra). */
+    const canvas = await html2canvas(elemento, { backgroundColor: '#ffffff', scale: 4 });
 
-    return { imagen: canvas.toDataURL('image/jpeg', 0.97), ancho: canvas.width, alto: canvas.height };
+    return { imagen: canvas.toDataURL('image/png'), ancho: canvas.width, alto: canvas.height };
   }
 
   private centrarNube(elemento: HTMLElement): void {
@@ -129,6 +131,6 @@ export class ModalExportado implements OnChanges {
     const dx = nube.clientWidth / 2 - (minX + maxX) / 2;
     const dy = nube.clientHeight / 2 - (minY + maxY) / 2;
     const ajusteVerticalNubePx = -40;
-    nube.style.transform = `scale(.82) translate(${dx}px, ${dy + ajusteVerticalNubePx}px)`;
+    nube.style.transform = `scale(1.15) translate(${dx}px, ${dy + ajusteVerticalNubePx}px)`;
   }
 }

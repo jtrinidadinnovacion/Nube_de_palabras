@@ -1,5 +1,7 @@
-import { Component, afterNextRender, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, afterNextRender, computed, inject, signal } from '@angular/core';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { filter } from 'rxjs';
+import { TitlebarService } from './services/titlebar.service';
 
 /* Forma mínima de ipcRenderer que usamos aquí (ver preload/contextIsolation:false en el proyecto de Electron). */
 interface IpcRenderer {
@@ -19,10 +21,29 @@ interface VentanaConElectron extends Window {
   styleUrl: './app.css'
 })
 export class App {
+  private readonly router = inject(Router);
+  private readonly titlebarService = inject(TitlebarService);
   protected readonly pantallaCompleta = signal(false);
+  private readonly rutaEnPrincipal = signal(this.router.url.startsWith('/principal'));
+  /* La barra de la ventana usa imágenes distintas dentro de "principal" (prin_fondo/prin_mini/prin_max) que en el resto
+  de las pantallas -inicio, instrucciones, about- (ini_fondo/ini_mini/ini-max). "Acerca de" se abre encima de la ruta
+  "principal" sin cambiarla, así que también cuenta como "no principal" mientras esté abierto. */
+  protected readonly enPrincipal = computed(() => this.rutaEnPrincipal() && !this.titlebarService.mostrandoAbout());
+  /* Ícono de maximizar/restaurar: cada grupo de pantallas tiene su propio par según el estado de la ventana.
+  En pantalla completa el botón restaura (achica); en ventana normal, maximiza (agranda). */
+  protected readonly iconoMaximizar = computed(() => {
+    if (this.enPrincipal()) {
+      return this.pantallaCompleta() ? 'img/prin_max.png' : 'img/prin_max2.png';
+    }
+    return this.pantallaCompleta() ? 'img/ini-max.png' : 'img/ini_max2.png';
+  });
   private ipcRenderer: IpcRenderer | null = null;
 
   constructor() {
+    this.router.events.pipe(filter((evento) => evento instanceof NavigationEnd)).subscribe(() => {
+      this.rutaEnPrincipal.set(this.router.url.startsWith('/principal'));
+    });
+
     afterNextRender(() => {
       const ventana = window as VentanaConElectron;
 

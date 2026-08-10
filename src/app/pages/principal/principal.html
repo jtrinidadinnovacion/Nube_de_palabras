@@ -10,9 +10,8 @@
         class="principal__clear-hit"
         [disabled]="!palabras().length && !palabrasNube().length && !nombreArchivoSeleccionado()"
         aria-label="Limpiar"
-        (click)="limpiar()"
+        (click)="confirmarLimpiar()"
       ></button>
-      <a routerLink="/" class="principal__logout-hit" aria-label="Salir"></a>
     </div>
   </header>
 
@@ -61,7 +60,7 @@
               (dragleave)="alSalirDelArrastre()"
               (drop)="alSoltarArchivo($event)"
             >
-              <img src="img/subir_archivo.png" alt="" class="principal__file-icon" />
+              <img [src]="nombreArchivoSeleccionado() ? 'img/img_cargado.png' : 'img/subir_archivo.png'" alt="" class="principal__file-icon" />
               @if (nombreArchivoSeleccionado()) {
                 <div class="principal__file-selected">
                   <p class="principal__file-hint principal__file-hint--selected">{{ nombreArchivoSeleccionado() }}</p>
